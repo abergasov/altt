@@ -10,7 +10,7 @@ RUN go mod download
 # COPY the source code as the last step
 COPY . .
 
-RUN make build
+RUN CGO_ENABLED=0 make build
 
 # step 2 - create container to run
 FROM debian:buster-slim
