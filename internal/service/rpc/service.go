@@ -53,10 +53,13 @@ func ChainAvailable(chain entities.Chain) bool {
 }
 
 func GetRPC(chain entities.Chain) (string, error) {
+	if s == nil {
+		log.Fatal("rpc service not initialized")
+	}
 	s.usageMU.Lock()
 	defer s.usageMU.Unlock()
 	if s.usage == nil {
-		log.Fatal("rpc service not initialized")
+		log.Fatal("rpc service not initialized") // nolint:gocritic
 	}
 	if _, ok := s.usage[chain]; !ok {
 		return "", ErrRPCUnsupportedChain

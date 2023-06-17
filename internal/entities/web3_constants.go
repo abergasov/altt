@@ -18,7 +18,7 @@ const (
 	ETH     Token = "ETH"
 	MATIC   Token = "MATIC"
 	USDC    Token = "USDC"
-	BTC_b   Token = "BTC_b"
+	BTC_b   Token = "BTC_b" // nolint:stylecheck
 	USDT    Token = "USDT"
 	DAI     Token = "DAI"
 	FTM     Token = "FTM"
@@ -32,21 +32,21 @@ const (
 	XDAI    Token = "XDAI"
 
 	ChainEthereum  Chain = 1
-	ChainOptimism        = 10
-	ChainPolygon         = 137
-	ChainFantom          = 250
-	ChainArbitrum        = 42161
-	ChainAvalanche       = 43114
-	ChainBNB             = 56
-	ChainCoreDAO         = 1116
-	ChainHarmony         = 1666600000
-	ChainGnosis          = 100
-	ChainCelo            = 42220
+	ChainOptimism  Chain = 10
+	ChainPolygon   Chain = 137
+	ChainFantom    Chain = 250
+	ChainArbitrum  Chain = 42161
+	ChainAvalanche Chain = 43114
+	ChainBNB       Chain = 56
+	ChainCoreDAO   Chain = 1116
+	ChainHarmony   Chain = 1666600000
+	ChainGnosis    Chain = 100
+	ChainCelo      Chain = 42220
 )
 
 func (c Chain) String() string {
 	names := map[Chain]string{
-		ChainEthereum:  "ethereum",
+		ChainEthereum:  "eth",
 		ChainOptimism:  "optimism",
 		ChainPolygon:   "polygon",
 		ChainFantom:    "fantom",
@@ -153,14 +153,14 @@ var Tokens = map[Token]map[Chain]common.Address{
 	},
 }
 
-func GetTokenAddress(chainId Chain, token Token) (common.Address, error) {
+func GetTokenAddress(chainID Chain, token Token) (common.Address, error) {
 	if _, ok := Tokens[token]; !ok {
 		return common.Address{}, ErrUnknownToken
 	}
-	if _, ok := Tokens[token][chainId]; !ok {
+	if _, ok := Tokens[token][chainID]; !ok {
 		return common.Address{}, ErrUnknownChain
 	}
-	return Tokens[token][chainId], nil
+	return Tokens[token][chainID], nil
 }
 
 func GetChain(chainID *big.Int) Chain {

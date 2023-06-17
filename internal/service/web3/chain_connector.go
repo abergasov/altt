@@ -75,8 +75,8 @@ func GetConnector(chain entities.Chain) (*ChainConnector, error) {
 	return &conn, nil
 }
 
-func (s *ChainConnector) GetWeb3() (*ethclient.Client, error) {
-	rpcURL, err := rpc.GetRPC(s.chainID)
+func (c *ChainConnector) GetWeb3() (*ethclient.Client, error) {
+	rpcURL, err := rpc.GetRPC(c.chainID)
 	if err != nil {
 		return nil, fmt.Errorf("get rpc url: %w", err)
 	}
@@ -87,8 +87,8 @@ func (c *ChainConnector) GetChainID() entities.Chain {
 	return c.chainID
 }
 
-func (s *ChainConnector) GetChainIDBI() *big.Int {
-	return big.NewInt(int64(s.chainID))
+func (c *ChainConnector) GetChainIDBI() *big.Int {
+	return big.NewInt(int64(c.chainID))
 }
 
 func (c *ChainConnector) TxHash(hash string) string {
