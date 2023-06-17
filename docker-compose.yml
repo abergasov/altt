@@ -1,10 +1,5 @@
 version: '3'
 
-volumes:
-  data_pq_volume:
-  nf_volume_data:
-  nf_conf_data:
-
 services:
   app:
     build:
@@ -16,23 +11,10 @@ services:
     environment:
       GIT_HASH: $GIT_HASH
     ports:
-      - 8000:8000
-    depends_on:
-      - dbPostgres
+      - 8012:8000
     networks:
       - app-network
     command: [ "/app/binary", "--config", "configs/app_conf_docker.yml" ]
-
-  dbPostgres:
-    image: postgres:14.2
-    env_file:
-      - configs/common.env
-    ports:
-      - "5949:5432"
-    networks:
-      - app-network
-    volumes:
-      - data_pq_volume:/var/lib/postgresql/data
 
 #Docker Networks
 networks:

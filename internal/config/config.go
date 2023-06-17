@@ -10,19 +10,8 @@ import (
 )
 
 type AppConfig struct {
-	AppPort        int                 `yaml:"app_port"`
-	MigratesFolder string              `yaml:"migrates_folder"`
-	ConfigDB       DBConf              `yaml:"conf_db"`
-	ChainRPCs      map[string][]string `yaml:"rpc_urls"`
-}
-
-type DBConf struct {
-	Address        string `yaml:"address"`
-	Port           string `yaml:"port"`
-	User           string `yaml:"user"`
-	Pass           string `yaml:"pass"`
-	DBName         string `yaml:"db_name"`
-	MaxConnections int    `yaml:"max_connections"`
+	AppPort   int                 `yaml:"app_port"`
+	ChainRPCs map[string][]string `yaml:"rpc_urls"`
 }
 
 func InitConf(confFile string) (*AppConfig, error) {

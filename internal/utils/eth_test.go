@@ -5,8 +5,16 @@ import (
 	"math/big"
 	"testing"
 
+	"github.com/ethereum/go-ethereum/common"
+
 	"github.com/stretchr/testify/require"
 )
+
+func TestCustomFromWei2(t *testing.T) {
+	a := "asda"
+	ad := common.HexToAddress(a)
+	t.Log(ad.String())
+}
 
 func TestWeiFromETHString(t *testing.T) {
 	table := map[string]string{

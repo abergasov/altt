@@ -1,5 +1,4 @@
 app_port: 8000
-migrates_folder: migrations
 # see https://chainlist.org/chain/43114
 rpc_urls:
   eth:
@@ -25,11 +24,3 @@ rpc_urls:
     - https://1rpc.io/avax/c
     - https://avax.meowrpc.com
     - https://avalanche-c-chain.publicnode.com
-
-conf_db:
-  address: 127.0.0.1
-  port: 5949
-  user: aHAjeK
-  pass: AOifjwelmc8dw
-  db_name: sybill
-  max_connections: 10

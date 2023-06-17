@@ -35,7 +35,6 @@ func (s *Server) initRoutes() {
 	})
 	s.httpEngine.Get("/:chain/balance/:address", s.getNativeBalance)
 	s.httpEngine.Get("/:chain/:token/balance/:address", s.getKnownTokenBalance)
-	s.httpEngine.Get("/:chain/:tokenAddress/balance/:address", s.getTokenBalance)
 }
 
 // Run starts the HTTP Server.

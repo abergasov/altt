@@ -2,12 +2,12 @@ package rpc
 
 import (
 	"altt/internal/entities"
-	"altt/internal/logger"
 	"container/list"
 	"errors"
-	"go.uber.org/zap"
 	"log"
 	"sync"
+
+	"go.uber.org/zap"
 )
 
 var (
@@ -16,34 +16,40 @@ var (
 )
 
 type Service struct {
-	log     logger.AppLogger
-	rpcs    map[entities.Chain][]string
-	usage   map[entities.Chain]*list.List
-	usageMU sync.Mutex
+	rpcs             map[entities.Chain][]string
+	usage            map[entities.Chain]*list.List
+	usageMU          sync.Mutex
+	configuredChains map[entities.Chain]struct{}
 }
 
 var s *Service
 
-func NewService(log logger.AppLogger, rpcEndpoints map[string][]string) {
-	preparedRPCs := make(map[entities.Chain][]string, len(rpcEndpoints))
+func NewService(rpcEndpoints map[string][]string) {
+	s = &Service{
+		rpcs:             make(map[entities.Chain][]string, len(rpcEndpoints)),
+		configuredChains: make(map[entities.Chain]struct{}, len(rpcEndpoints)),
+		usage:            make(map[entities.Chain]*list.List),
+	}
 	for chain, rpcList := range rpcEndpoints {
 		c, err := entities.ChainFromString(chain)
 		if err != nil {
 			log.Fatal("invalid chain", err, zap.String("chain", chain))
 		}
-		preparedRPCs[c] = rpcList
+		s.rpcs[c] = rpcList
+		s.configuredChains[c] = struct{}{}
 	}
-	s = &Service{
-		log:   log.With(zap.String("service", "rpc")),
-		rpcs:  preparedRPCs,
-		usage: make(map[entities.Chain]*list.List),
-	}
+
 	for chain, rpcs := range s.rpcs {
 		s.usage[chain] = list.New()
 		for _, rpc := range rpcs {
 			s.usage[chain].PushBack(rpc)
 		}
 	}
+}
+
+func ChainAvailable(chain entities.Chain) bool {
+	_, ok := s.configuredChains[chain]
+	return ok
 }
 
 func GetRPC(chain entities.Chain) (string, error) {

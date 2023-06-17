@@ -6,12 +6,11 @@ require (
 	github.com/ethereum/go-ethereum v1.11.6
 	github.com/gofiber/fiber/v2 v2.42.0
 	github.com/golang-migrate/migrate/v4 v4.15.2
+	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
 	github.com/google/brotli/go/cbrotli v0.0.0-20230201092028-ed1995b6bda1
 	github.com/hashicorp/golang-lru v0.6.0
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/lib/pq v1.10.7
-	github.com/neo4j/neo4j-go-driver/v4 v4.4.5
-	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
 	github.com/shopspring/decimal v1.2.0
 	github.com/stretchr/testify v1.8.0
 	go.uber.org/zap v1.24.0
