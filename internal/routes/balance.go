@@ -12,13 +12,11 @@ import (
 func (s *Server) getNativeBalance(ctx *fiber.Ctx) error {
 	chain, err := entities.ChainFromString(ctx.Params("chain"))
 	if err != nil {
-		ctx.Status(http.StatusNotFound)
-		return err
+		return ctx.Status(http.StatusNotFound).SendString(err.Error())
 	}
 	address := common.HexToAddress(ctx.Params("address"))
 	if !checkAddressValid(address) {
-		ctx.Status(http.StatusBadRequest)
-		return err
+		return ctx.Status(http.StatusBadRequest).SendString("invalid address")
 	}
 	balance, err := s.serviceBalancer.GetNativeBalance(ctx.UserContext(), chain, address)
 	if err != nil {

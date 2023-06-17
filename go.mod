@@ -5,12 +5,8 @@ go 1.20
 require (
 	github.com/ethereum/go-ethereum v1.11.6
 	github.com/gofiber/fiber/v2 v2.42.0
-	github.com/golang-migrate/migrate/v4 v4.15.2
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
-	github.com/google/brotli/go/cbrotli v0.0.0-20230201092028-ed1995b6bda1
-	github.com/hashicorp/golang-lru v0.6.0
-	github.com/jmoiron/sqlx v1.3.5
-	github.com/lib/pq v1.10.7
+	github.com/phayes/freeport v0.0.0-20220201140144-74d24b5ae9f5
 	github.com/shopspring/decimal v1.2.0
 	github.com/stretchr/testify v1.8.0
 	go.uber.org/zap v1.24.0
@@ -29,8 +25,6 @@ require (
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
-	github.com/hashicorp/errwrap v1.1.0 // indirect
-	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/holiman/uint256 v1.2.2-0.20230321075855-87b91420868c // indirect
 	github.com/klauspost/compress v1.15.15 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
@@ -49,9 +43,11 @@ require (
 	github.com/valyala/fasthttp v1.44.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
+	go.uber.org/goleak v1.1.12 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.1.0 // indirect
 	golang.org/x/sys v0.6.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
