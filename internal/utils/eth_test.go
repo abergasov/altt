@@ -1,7 +1,7 @@
 package utils_test
 
 import (
-	"go_project_template/internal/utils"
+	"altt/internal/utils"
 	"math/big"
 	"testing"
 

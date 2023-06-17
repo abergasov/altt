@@ -1,8 +1,8 @@
 package routes
 
 import (
-	"go_project_template/internal/logger"
-	"go_project_template/internal/service/sampler"
+	"altt/internal/logger"
+	"altt/internal/service/web3/balancer"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -10,19 +10,19 @@ import (
 )
 
 type Server struct {
-	appAddr    string
-	log        logger.AppLogger
-	service    *sampler.Service
-	httpEngine *fiber.App
+	appAddr         string
+	log             logger.AppLogger
+	serviceBalancer *balancer.Service
+	httpEngine      *fiber.App
 }
 
 // InitAppRouter initializes the HTTP Server.
-func InitAppRouter(log logger.AppLogger, service *sampler.Service, address string) *Server {
+func InitAppRouter(log logger.AppLogger, serviceBalancer *balancer.Service, address string) *Server {
 	app := &Server{
-		appAddr:    address,
-		httpEngine: fiber.New(fiber.Config{}),
-		service:    service,
-		log:        log.With(zap.String("service", "http")),
+		appAddr:         address,
+		httpEngine:      fiber.New(fiber.Config{}),
+		serviceBalancer: serviceBalancer,
+		log:             log.With(zap.String("service", "http")),
 	}
 	app.httpEngine.Use(recover.New())
 	app.initRoutes()
@@ -33,6 +33,9 @@ func (s *Server) initRoutes() {
 	s.httpEngine.Get("/", func(ctx *fiber.Ctx) error {
 		return ctx.SendString("pong")
 	})
+	s.httpEngine.Get("/:chain/balance/:address", s.getNativeBalance)
+	s.httpEngine.Get("/:chain/:token/balance/:address", s.getKnownTokenBalance)
+	s.httpEngine.Get("/:chain/:tokenAddress/balance/:address", s.getTokenBalance)
 }
 
 // Run starts the HTTP Server.

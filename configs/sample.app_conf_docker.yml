@@ -1,5 +1,30 @@
 app_port: 8000
 migrates_folder: migrations
+rpc_urls:
+  eth:
+    - https://eth.llamarpc.com
+    - https://uk.rpc.blxrbdn.com
+    - https://virginia.rpc.blxrbdn.com
+    - https://rpc.ankr.com/eth
+  optimism:
+    - https://optimism.meowrpc.com
+    - https://rpc.optimism.gateway.fm
+    - https://optimism.publicnode.com
+    - https://mainnet.optimism.io
+  polygon:
+    - https://rpc.ankr.com/polygon
+    - https://polygon.drpc.org
+    - https://polygon-rpc.com
+  arbitrum:
+    - https://rpc.arb1.arbitrum.gateway.fm
+    - https://arbitrum-one.public.blastapi.io
+    - https://arb-mainnet-public.unifra.io
+  avalanche:
+    - https://avalanche.blockpi.network/v1/rpc/public
+    - https://1rpc.io/avax/c
+    - https://avax.meowrpc.com
+    - https://avalanche-c-chain.publicnode.com
+
 conf_db:
   address: dbPostgres
   port: 5432

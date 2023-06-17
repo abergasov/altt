@@ -1,4 +1,4 @@
-module go_project_template
+module altt
 
 go 1.20
 

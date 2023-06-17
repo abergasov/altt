@@ -1,14 +1,14 @@
 package main
 
 import (
+	"altt/internal/config"
+	"altt/internal/logger"
+	"altt/internal/routes"
+	"altt/internal/service/rpc"
+	"altt/internal/service/web3/balancer"
+	"altt/internal/storage/database"
 	"flag"
 	"fmt"
-	"go_project_template/internal/config"
-	"go_project_template/internal/logger"
-	samplerRepo "go_project_template/internal/repository/sampler"
-	"go_project_template/internal/routes"
-	samplerService "go_project_template/internal/service/sampler"
-	"go_project_template/internal/storage/database"
 	"log"
 	"os"
 	"os/signal"
@@ -46,14 +46,12 @@ func main() {
 		}
 	}()
 
-	appLog.Info("init repositories")
-	repo := samplerRepo.InitRepo(dbConn)
-
 	appLog.Info("init services")
-	service := samplerService.InitService(appLog, repo)
+	rpc.NewService(appLog, appConf.ChainRPCs)
+	serviceBalancer := balancer.NewService(appLog)
 
 	appLog.Info("init http service")
-	appHTTPServer := routes.InitAppRouter(appLog, service, fmt.Sprintf(":%d", appConf.AppPort))
+	appHTTPServer := routes.InitAppRouter(appLog, serviceBalancer, fmt.Sprintf(":%d", appConf.AppPort))
 	defer func() {
 		if err = appHTTPServer.Stop(); err != nil {
 			appLog.Fatal("unable to stop http service", err)

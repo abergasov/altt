@@ -1,11 +1,11 @@
 package approver
 
 import (
+	"altt/internal/logger"
 	"context"
 	"crypto/ecdsa"
 	"errors"
 	"fmt"
-	"go_project_template/internal/logger"
 	"math/big"
 	"sync"
 	"time"

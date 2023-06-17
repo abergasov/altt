@@ -1,12 +1,12 @@
 package approver_test
 
 import (
+	"altt/internal/logger"
+	"altt/internal/service/web3"
+	"altt/internal/service/web3/approver"
+	"altt/internal/utils"
 	"context"
 	"crypto/ecdsa"
-	"go_project_template/internal/logger"
-	"go_project_template/internal/service/web3"
-	"go_project_template/internal/service/web3/approver"
-	"go_project_template/internal/utils"
 	"os"
 	"testing"
 	"time"
