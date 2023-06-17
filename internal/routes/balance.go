@@ -29,8 +29,7 @@ func (s *Server) getNativeBalance(ctx *fiber.Ctx) error {
 func (s *Server) getKnownTokenBalance(ctx *fiber.Ctx) error {
 	chain, err := entities.ChainFromString(ctx.Params("chain"))
 	if err != nil {
-		ctx.Status(http.StatusNotFound)
-		return err
+		return ctx.Status(http.StatusNotFound).SendString(err.Error())
 	}
 	token, err := entities.TokenFromString(ctx.Params("token"))
 	if err != nil {
@@ -38,13 +37,11 @@ func (s *Server) getKnownTokenBalance(ctx *fiber.Ctx) error {
 		return err
 	}
 	if _, err = entities.GetTokenAddress(chain, token); err != nil {
-		ctx.Status(http.StatusNotFound)
-		return err
+		return ctx.Status(http.StatusBadRequest).SendString(err.Error())
 	}
 	address := common.HexToAddress(ctx.Params("address"))
 	if !checkAddressValid(address) {
-		ctx.Status(http.StatusBadRequest)
-		return err
+		return ctx.Status(http.StatusBadRequest).SendString("invalid address")
 	}
 	balance, err := s.serviceBalancer.GetKnownTokenBalance(ctx.UserContext(), token, chain, address)
 	if err != nil {

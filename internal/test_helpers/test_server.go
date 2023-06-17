@@ -29,11 +29,13 @@ func NewTestServer(t *testing.T, container *TestContainer) *TestServer {
 	t.Cleanup(func() {
 		require.NoError(t, appHTTPServer.Stop())
 	})
-	go appHTTPServer.Run()
+	go func() {
+		require.NoError(t, appHTTPServer.Run())
+	}()
 	return srv
 }
 
-func (ts *TestServer) Request(t *testing.T, method string, path string, body interface{}, headers map[string]string) *TestResponse {
+func (ts *TestServer) Request(t *testing.T, method, path string, body interface{}, headers map[string]string) *TestResponse {
 	t.Helper()
 
 	var b []byte

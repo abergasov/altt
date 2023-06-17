@@ -29,7 +29,7 @@ func TestServer_GetNativeBalance(t *testing.T) {
 		var response entities.Balance
 		resp.RequireUnmarshal(t, &response)
 		require.Equal(t, entities.ChainEthereum, response.Chain)
-		t.Log(fmt.Sprintf("balance is %s %s", response.TokenBalance, entities.MapChainToFuel(chain)))
+		t.Logf("balance is %s %s", response.TokenBalance, entities.MapChainToFuel(chain))
 	})
 
 	t.Run("unknown chain", func(t *testing.T) {
@@ -53,7 +53,19 @@ func TestServer_GetKnownTokenBalanceByAddress(t *testing.T) {
 		var response entities.Balance
 		resp.RequireUnmarshal(t, &response)
 		require.Equal(t, entities.ChainEthereum, response.Chain)
-		t.Log(fmt.Sprintf("balance is %s %s", response.TokenBalance, token))
+		t.Logf("balance is %s %s", response.TokenBalance, token)
 		t.Log("https://etherscan.io/tokenholdings?a=" + address)
+	})
+	t.Run("unknown chain", func(t *testing.T) {
+		// when
+		resp := srv.Get(t, fmt.Sprintf("/abc/%s/balance/%s", token, address))
+		// then
+		resp.RequireNotFound(t)
+	})
+	t.Run("disabled chain", func(t *testing.T) {
+		// when
+		resp := srv.Get(t, fmt.Sprintf("/%s/%s/balance/%s", entities.ChainOptimism, token, address))
+		// then
+		resp.RequireServerError(t)
 	})
 }
