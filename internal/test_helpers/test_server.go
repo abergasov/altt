@@ -25,7 +25,12 @@ func NewTestServer(t *testing.T, container *TestContainer) *TestServer {
 		client:  *http.DefaultClient,
 	}
 
-	appHTTPServer := routes.InitAppRouter(container.Log, container.ServiceBalancer, fmt.Sprintf(":%d", srv.appPort))
+	appHTTPServer := routes.InitAppRouter(
+		container.Log,
+		container.ServiceBalancer,
+		fmt.Sprintf(":%d", srv.appPort),
+		container.Conf.DisableMetrics,
+	)
 	t.Cleanup(func() {
 		require.NoError(t, appHTTPServer.Stop())
 	})

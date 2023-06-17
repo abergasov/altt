@@ -15,6 +15,7 @@ import (
 )
 
 func (s *Service) GetNativeBalance(ctx context.Context, chain entities.Chain, holder common.Address) (*entities.Balance, error) {
+	s.metrics.NewNativeBalanceRequest(holder)
 	if !rpc.ChainAvailable(chain) {
 		return nil, fmt.Errorf("chain %s is not available", chain.String())
 	}

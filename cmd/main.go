@@ -36,10 +36,10 @@ func main() {
 
 	appLog.Info("init services")
 	rpc.NewService(appConf.ChainRPCs)
-	serviceBalancer := balancer.NewService(appLog, approver.InitService(appLog))
+	serviceBalancer := balancer.NewService(appLog, approver.InitService(appLog), appConf.DisableMetrics)
 
 	appLog.Info("init http service")
-	appHTTPServer := routes.InitAppRouter(appLog, serviceBalancer, fmt.Sprintf(":%d", appConf.AppPort))
+	appHTTPServer := routes.InitAppRouter(appLog, serviceBalancer, fmt.Sprintf(":%d", appConf.AppPort), appConf.DisableMetrics)
 	defer func() {
 		if err = appHTTPServer.Stop(); err != nil {
 			appLog.Fatal("unable to stop http service", err)

@@ -10,8 +10,9 @@ import (
 )
 
 type AppConfig struct {
-	AppPort   int                 `yaml:"app_port"`
-	ChainRPCs map[string][]string `yaml:"rpc_urls"`
+	AppPort        int                 `yaml:"app_port"`
+	DisableMetrics bool                `yaml:"disable_metrics"`
+	ChainRPCs      map[string][]string `yaml:"rpc_urls"`
 }
 
 func InitConf(confFile string) (*AppConfig, error) {

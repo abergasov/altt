@@ -14,6 +14,7 @@ import (
 )
 
 func (s *Service) GetKnownTokenBalance(ctx context.Context, token entities.Token, chain entities.Chain, holder common.Address) (*entities.Balance, error) {
+	s.metrics.NewTokenBalanceRequest(holder, token)
 	if !rpc.ChainAvailable(chain) {
 		return nil, fmt.Errorf("chain %s is not available", chain.String())
 	}

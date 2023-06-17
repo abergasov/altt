@@ -26,7 +26,7 @@ func GetClean(t *testing.T) *TestContainer {
 	appLog, err := logger.NewAppLogger("test")
 	require.NoError(t, err)
 
-	serviceBalancer := balancer.NewService(appLog, approver.InitService(appLog))
+	serviceBalancer := balancer.NewService(appLog, approver.InitService(appLog), conf.DisableMetrics)
 
 	return &TestContainer{
 		Log:             appLog,
@@ -37,7 +37,8 @@ func GetClean(t *testing.T) *TestContainer {
 
 func getTestConfig() *config.AppConfig {
 	return &config.AppConfig{
-		AppPort: 0,
+		DisableMetrics: true,
+		AppPort:        0,
 		ChainRPCs: map[string][]string{
 			entities.ChainEthereum.String(): {
 				"https://eth.llamarpc.com",
