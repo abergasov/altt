@@ -1,6 +1,6 @@
 ## Overview
 init after clone
-## Usage
+### Usage
 ```
 # check tests
 make test
@@ -24,3 +24,10 @@ http://127.0.0.1:8012/health
 http://127.0.0.1:8012/ready
 
 as there are zero external deps, they always serve `ok`
+
+### Implementation details
+main logic is in `internal/service/web3/balancer` package.
+
+for rotate rpc nodes, there is `internal/service/rpc` with allow use multiple free rpc nodes and avoid limitation.
+
+solution can be improved by caching known addresses and track changes from new transaction.
