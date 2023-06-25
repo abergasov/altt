@@ -39,7 +39,7 @@ By designing the system with a focus on read performance, we can ensure that use
 * Uploading files usually takes more time compared to downloading.
 * The file upload process can consume all available server connections.
 
-Based on these points, it is recommended to use separate servers for file uploading and downloading. This approach has several benefits:
+Based on these points we will use separate servers for file uploading and downloading. This approach has several benefits:
 * Prevents exhausting the available connections on the server during file uploads.
 * Allows for independent scaling of the uploading and downloading components, addressing potential bottlenecks.
 * Provides flexibility to optimize each server for its specific task, such as fine-tuning network settings for efficient uploading or caching strategies for fast downloading.
@@ -171,3 +171,6 @@ HumanReadable structure stored in used in **UserSC**. It can be optimized for us
 3. Gateway service get file from **UserSC**.
 4. Gateway load storage proofs from file metadata. 
 5. Gateway service get list of storage clusters from **TopologySC** and verify signatures.
+
+highlevel schema and flow:
+https://drive.google.com/file/d/1tGdRC836XGj6ZopE4npD6KqWaXBEogcq/view
