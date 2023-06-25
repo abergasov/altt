@@ -11,7 +11,7 @@ services:
     environment:
       GIT_HASH: $GIT_HASH
     ports:
-      - 8012:8000
+      - 8000:8000
     networks:
       - app-network
     command: [ "/app/binary", "--config", "configs/app_conf_docker.yml" ]
