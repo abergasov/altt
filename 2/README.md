@@ -61,14 +61,25 @@ In the event of a failure, the system can switch to a functioning replica.
   * keep track of proof for each file from *storageCluster*
   * keep list of uploaded file names
 * **Storage clusters**: each cluster stores metadata about images and maintains a connection to its dedicated storage location where the image is stored.
-  * Metadata database (meta db): The meta db stores image metadata properties. Initially, it can be located on the same database as the storage clusters and scaled as needed based on demand.
+  * each cluster can replicate data to other clusters on master-slave basis. If current master will be unavailable, one of the slaves will become a master.
+  * **Metadata database**: The meta db stores image metadata properties. Initially, it can be located on the same database as the storage clusters and scaled as needed based on demand.
     * metainfo we need at first time *(76 bytes per image, 1140Mb for 1 month)*:
       * image id *(32 bytes)*
       * latitute *(4 bytes)*
       * longitude *(4 butes)*
       * title *(32 bytes)*
       * creation date *(4 bytes)*
-  * Storage: The storage component is responsible for handling the reading and writing of image files on demand.
+  * **Storage**: this component is responsible for handling the reading and writing of files on demand.
+    * for optimization, each node can have an L1 and L2 caching system, which tracks frequently requested files. The L1 cache is stored in memory, while the L2 cache is stored on disk.
+      * files should move from L1 to L2 if more popular files exist.
+      * files should move from L2 to L1 if a file becomes more popular than other files in L1.
+    * nodes can be located in different networks and different locations for better safe guarantees.
+    * each node is separated into 2 parts:
+      * **Reading part**: Responsible for reading files from storage.
+        * implements L1 and L2 caches
+        * can be scaled on demand and hidden behind a load balancer
+      * **Writing part**: Responsible for writing files into storage
+    * Since each server is responsible for a specific file-range and there is low coupling between them, any part can be scaled independently and hidden behind a load balancer
 * **TopologySC**: smart contract that stores information about all the storage clusters in the system. Each cluster in the system has its own unique public-private key pair, which is used for the verification of file storage operations.
   * acts as a centralized registry for all the storage clusters, maintaining a record of their public keys and other relevant information.
 * **The Consistent Hasher module**: responsible for ensuring the equal distribution of image traffic across the storage clusters in the system. 
@@ -81,6 +92,9 @@ In the event of a failure, the system can switch to a functioning replica.
   * In the event of a service failure, there are other numbers available in the sequential sequence, so there is no need for a backup.
 * **Observer**: service which observe storage clusters state and change **TopologySC** if it need. On new cluster join into system - consistent hash circle should be rebalanced and **TopologySC** should be updated.
 * **Onboarder**: service is responsible for registering new users and deploying personalized smart contracts for each user. It also stores the associated contract address for each user in the database.
+* **Contract caching**: service load state of smart contracts and cache it in memory. This service should be used by all other services to get state of smart contract as middleware. 
+  * for new changes of **AppSC** or **TopologySC** smart contract it cat subscribe to events of contract
+  * any new changes to **UserSC** should also use this service as middleware, so it can update state of smart contract in cache
 
 ### Detailed design
 
@@ -172,5 +186,5 @@ HumanReadable structure stored in used in **UserSC**. It can be optimized for us
 4. Gateway load storage proofs from file metadata. 
 5. Gateway service get list of storage clusters from **TopologySC** and verify signatures.
 
-highlevel schema and flow:
+high level schema:
 https://drive.google.com/file/d/1tGdRC836XGj6ZopE4npD6KqWaXBEogcq/view
