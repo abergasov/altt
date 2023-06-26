@@ -18,10 +18,11 @@ existence on-chain.
 * The system should provide low latency for read requests, ensuring fast retrieval of media content.
 
 ### Calculations
-* Let's assume that we have 100_000_000 users. 
+* Let's assume that we have 100_000_000 users.
 * Let's assume that about 500_000 media files will be uploaded daily.
 * Let's assume that average size of media file is 1Mb.
 
+#### Storage
 Based on this assumptions we can calculate that we will have about 15_000_000 media files in 30 days. 
 
 If we store all the media files in one place, we will accumulate around 15TB of data within that period, resulting in approximately 180TB per year.
@@ -29,6 +30,11 @@ If we store all the media files in one place, we will accumulate around 15TB of 
 While this amount of data may not pose a significant challenge for modern hardware, it's important to consider the high volume of read requests we expect. Therefore, we should focus on optimizing our system for efficient read operations.
 
 By designing the system with a focus on read performance, we can ensure that users can quickly access and retrieve media files, providing a seamless experience with low latency.
+
+#### Bandwidth
+500_000 * 1Mb = 500Gb per day for upload, 5.7mb/s
+Let's assume that we have 1_000_000 daily active users and each user will download 10 media files per day in average.
+(1_000_000 * 10 * 1Mb) / 86400 = 116Mb/s
 
 #### Media meta info
 * Media meta info associated with media file only.
@@ -78,7 +84,9 @@ In the event of a failure, the system can switch to a functioning replica.
       * **Reading part**: Responsible for reading files from storage.
         * implements L1 and L2 caches
         * can be scaled on demand and hidden behind a load balancer
-      * **Writing part**: Responsible for writing files into storage
+      * **Writing part**: Responsible for writing files into storage, implements file processing flow:
+          * compressing
+          * upload proof of safe into *AppSC*
     * Since each server is responsible for a specific file-range and there is low coupling between them, any part can be scaled independently and hidden behind a load balancer
 * **TopologySC**: smart contract that stores information about all the storage clusters in the system. Each cluster in the system has its own unique public-private key pair, which is used for the verification of file storage operations.
   * acts as a centralized registry for all the storage clusters, maintaining a record of their public keys and other relevant information.
